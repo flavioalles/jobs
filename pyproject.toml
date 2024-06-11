@@ -11,6 +11,11 @@ package-mode = false
 python = "~3.12"
 
 
+[tool.poetry.group.dev.dependencies]
+ipython = "~8.25"
+black = "~24.4"
+mypy = "~1.10"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
