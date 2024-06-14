@@ -18,3 +18,7 @@ start-db:
 .PHONY: stop-db
 stop-db:
 	@docker stop mariadb
+
+.PHONY: connect-db
+connect-db:
+	@docker exec -i --tty mariadb mysql -u root -p -D jobs
