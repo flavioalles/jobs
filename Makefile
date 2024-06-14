@@ -8,7 +8,12 @@ format:
 
 .PHONY: start-db
 start-db:
-	@docker run --env MARIADB_ROOT_PASSWORD=a-password --publish 3306:3306 --name mariadb --rm mariadb:10.9.8
+	@docker run --env MARIADB_ROOT_PASSWORD=a-password \
+		--name mariadb \
+		--publish 3306:3306 \
+		--rm \
+		--volume ./data/mariadb:/var/lib/mysql \
+		mariadb:10.9.8
 
 .PHONY: stop-db
 stop-db:
