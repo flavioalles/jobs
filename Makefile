@@ -1,10 +1,10 @@
 .PHONY: check-format
 check-format:
-	@poetry run black --diff --color --target-version=py312 src/ tests/
+	@poetry run black --diff --color --target-version=py312 alembic/ src/ tests/
 
 .PHONY: format
 format:
-	@poetry run black --target-version=py312 src/ tests/
+	@poetry run black --target-version=py312 alembic/ src/ tests/
 
 .PHONY: start-db
 start-db:
