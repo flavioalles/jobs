@@ -24,6 +24,6 @@ from sqlalchemy.orm import sessionmaker
 
 # TODO: Read from app's (FastAPI?) config.
 # TODO: Create app user for DB.
-engine = create_engine("mysql+pymysql://root:a-password@localhost:3306/jobs")
+engine = create_engine("mysql+pymysql://root:a-password@localhost:3306/test_jobs")
 
 Session = sessionmaker(bind=engine)

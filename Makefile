@@ -1,10 +1,10 @@
 .PHONY: check-format
 check-format:
-	@poetry run black --diff --color --target-version=py312 alembic/ src/ tests/
+	@poetry run black --diff --color --target-version=py312 alembic/ src/
 
 .PHONY: format
 format:
-	@poetry run black --target-version=py312 alembic/ src/ tests/
+	@poetry run black --target-version=py312 alembic/ src/
 
 .PHONY: start-db
 start-db:
@@ -22,3 +22,7 @@ stop-db:
 .PHONY: connect-db
 connect-db:
 	@docker exec -i --tty mariadb mysql -u root -p -D jobs
+
+.PHONY: test
+test:
+	@poetry run pytest --verbose src/jobs/tests/
