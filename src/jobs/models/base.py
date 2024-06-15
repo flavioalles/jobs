@@ -32,5 +32,8 @@ class Abstract(Base):
         DateTime(timezone=True), default=func.utc_timestamp(), nullable=False
     )
     updated = Column(
-        DateTime(timezone=True), onupdate=func.utc_timestamp(), nullable=False
+        DateTime(timezone=True),
+        default=func.utc_timestamp(),
+        onupdate=func.utc_timestamp(),
+        nullable=False,
     )
