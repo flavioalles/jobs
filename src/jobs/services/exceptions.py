@@ -26,3 +26,12 @@ class ClientError(BaseError):
     """
 
     pass
+
+
+@dataclass
+class ConflictError(ClientError):
+    """
+    Exception raised when there is a conflict with an existing entity.
+    """
+
+    pass

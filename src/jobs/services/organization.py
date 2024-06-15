@@ -7,7 +7,7 @@ from sqlalchemy.exc import (
     OperationalError,
 )
 from .base import BaseService
-from .exceptions import ClientError, ServerError
+from .exceptions import ClientError, ConflictError, ServerError
 from ..models.database import Session
 from ..models.organization import Organization
 
@@ -38,9 +38,12 @@ class OrganizationService(BaseService):
             self.session.add(organization)
             self.session.flush()
             self.session.commit()
-        except (DataError, IntegrityError) as exc:
+        except DataError as exc:
             self.session.rollback()
             raise ClientError(message=str(exc))
+        except IntegrityError as exc:
+            self.session.rollback()
+            raise ConflictError(message=str(exc))
         except (InvalidRequestError, OperationalError):
             self.session.rollback()
             raise ServerError(message=str(exc))
