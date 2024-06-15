@@ -22,8 +22,11 @@ Attributes:
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-# TODO: Read from app's (FastAPI?) config.
+from ..settings.base import Settings
+
+settings = Settings()
+
 # TODO: Create app user for DB.
-engine = create_engine("mysql+pymysql://root:a-password@localhost:3306/test_jobs")
+engine = create_engine(settings.database_url)
 
 Session = sessionmaker(bind=engine)

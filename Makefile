@@ -25,7 +25,8 @@ connect-db:
 
 .PHONY: test
 test:
-	@poetry run pytest --verbose src/jobs/tests/
+	@ENV_FILE=src/jobs/settings/.env.pytest \
+		poetry run pytest -s --verbose src/jobs/tests/
 
 .PHONY: repl
 repl:

@@ -3,12 +3,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from ..models.base import Base
-from ..models.database import engine, Session
+from ..models.database import Session
+from ..settings.base import Settings
 
 
-# TODO: Move to app. config.
-# engine = create_engine("mysql+pymysql://root:a-password@localhost:3306/test_jobs")
-# SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+engine = create_engine(Settings().database_url)
 
 
 @pytest.fixture(scope="session")
