@@ -17,6 +17,8 @@ alembic = "~1.13"
 ipython = "~8.25"
 black = "~24.4"
 mypy = "~1.10"
+pytest = "~8.2"
+ipdb = "~0.13"
 
 [build-system]
 requires = ["poetry-core"]
