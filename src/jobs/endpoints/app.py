@@ -8,6 +8,7 @@ The `organization` router is included in the application to handle the jobs endp
 
 from fastapi import FastAPI
 
+from .config import setup_logger
 from ..endpoints import organization
 from ..settings.base import Settings
 
@@ -21,3 +22,5 @@ app = FastAPI(
     debug=settings.debug,
 )
 app.include_router(organization.router)
+
+setup_logger()

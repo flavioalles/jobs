@@ -1,3 +1,4 @@
+import logging
 import uuid
 from datetime import datetime
 
@@ -7,6 +8,8 @@ from pydantic import BaseModel
 from ..services.organization import OrganizationService
 from ..services.exceptions import ClientError, ConflictError, ServerError
 
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(
     prefix="/api/v1/organizations",
@@ -55,18 +58,21 @@ async def create_organization(organization: OrganizationInput) -> OrganizationOu
         HTTPException: If there is a conflict, bad request, or internal server error.
     """
     try:
+        logger.info(f"Creating organization with name: {organization.name}")
         organization = OrganizationService().create(organization.name)
     except ConflictError as exc:
-        # TODO: log
+        logger.error(f"Failed to create organization: {exc.message}")
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=exc.message)
     except ClientError as exc:
-        # TODO: log
+        logger.error(f"Failed to create organization: {exc.message}")
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=exc.message)
     except ServerError as exc:
-        # TODO: log
+        logger.error(f"Failed to create organization: {exc.message}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=exc.message
         )
+
+    logger.info(f"Organization created: {organization.name}")
 
     return OrganizationOutput(
         name=organization.name,
