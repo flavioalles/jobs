@@ -31,3 +31,8 @@ test:
 .PHONY: repl
 repl:
 	@poetry run ipython
+
+.PHONY: run-dev-app
+run-dev-app:
+	@ENV_FILE=src/jobs/settings/.env.development \
+		poetry run fastapi dev src/jobs/endpoints/app.py

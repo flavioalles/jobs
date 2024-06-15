@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 
 from ..models.base import Base
 from ..models.database import Session
+from ..services.organization import OrganizationService
 from ..settings.base import Settings
 
 
@@ -37,3 +38,10 @@ def database_setup_and_teardown(database_engine):
     for table in reversed(Base.metadata.sorted_tables):
         session.execute(table.delete())
     session.commit()
+
+
+@pytest.fixture(scope="function")
+def organization_service():
+    service = OrganizationService()
+    yield service
+    service.session.rollback()

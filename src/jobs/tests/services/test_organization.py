@@ -1,14 +1,6 @@
 import pytest
 
 from ...models.organization import Organization
-from ...services.organization import OrganizationService
-
-
-@pytest.fixture(scope="function")
-def organization_service():
-    service = OrganizationService()
-    yield service
-    service.session.rollback()
 
 
 class TestOrganizationService:
