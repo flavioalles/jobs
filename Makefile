@@ -26,3 +26,7 @@ connect-db:
 .PHONY: test
 test:
 	@poetry run pytest --verbose src/jobs/tests/
+
+.PHONY: repl
+repl:
+	@poetry run ipython
