@@ -28,17 +28,6 @@ def database_setup(database_engine):
     Base.metadata.drop_all(bind=database_engine)
 
 
-# @pytest.fixture(scope="function")
-# def database_session(database_engine):
-#     """Provide a transactional scope around a series of operations."""
-#     session = Session()
-#
-#     yield session
-#     import ipdb; ipdb.set_trace()
-#
-#     session.rollback()
-
-
 @pytest.fixture(scope="function", autouse=True)
 def database_setup_and_teardown(database_engine):
     """Clean the database before and after each test."""
@@ -48,9 +37,3 @@ def database_setup_and_teardown(database_engine):
     for table in reversed(Base.metadata.sorted_tables):
         session.execute(table.delete())
     session.commit()
-
-
-# @pytest.fixture(scope="function")
-# def database_session(database_engine):
-#     """Provide a transactional scope around a series of operations."""
-#     return Session()
