@@ -3,7 +3,7 @@ import pytest
 from ...models.organization import Organization
 
 
-class TestOrganizationService:
+class TestCreateOrganizationService:
 
     def test_when_create_is_successful(self, organization_service, valid_password):
         assert organization_service.session.query(Organization).count() == 0
