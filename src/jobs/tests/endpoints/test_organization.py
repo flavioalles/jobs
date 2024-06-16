@@ -22,6 +22,7 @@ class TestCreateOrganizationEndpoint:
         Args:
             test_app: The test client for the application.
             organization_service: The organization service.
+            valid_password: A valid password for the organization.
 
         Returns:
             None
