@@ -29,6 +29,15 @@ class ClientError(BaseError):
 
 
 @dataclass
+class NotFoundError(ClientError):
+    """
+    Exception raised when an entity is not found.
+    """
+
+    pass
+
+
+@dataclass
 class ConflictError(ClientError):
     """
     Exception raised when there is a conflict with an existing entity.

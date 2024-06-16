@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 
 from ..models.base import Base
 from ..models.database import Session
+from ..services.job import JobService
 from ..services.organization import OrganizationService
 from ..settings.base import Settings
 
@@ -50,3 +51,10 @@ def organization_service():
 @pytest.fixture(scope="session")
 def valid_password():
     return "jqM.[+D;]TK*&q*jHG<JC]yAu1Evtv6K"
+
+
+@pytest.fixture(scope="function")
+def job_service():
+    service = JobService()
+    yield service
+    service.session.rollback()
