@@ -2,7 +2,7 @@ import pytest
 
 from ...models.job import Job
 from ...models.organization import Organization
-from ...utils.job import JobContract, JobMode
+from ...utils.job import JobContract, JobMode, JobState
 
 
 class TestJobService:
@@ -26,6 +26,9 @@ class TestJobService:
 
         a_job = job_service.session.query(Job).one()
         assert a_job.title == "a-job"
+        assert a_job.description is None
+        assert a_job.state == JobState.DRAFT
         assert a_job.salary == float(100000)
         assert a_job.mode == JobMode.ON_SITE
         assert a_job.contract == JobContract.FULL_TIME
+        assert a_job.organization_id == an_organization.id
