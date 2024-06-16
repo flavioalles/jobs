@@ -34,7 +34,7 @@ class Job(Abstract):
     organization = relationship("Organization", back_populates="jobs")
 
     def __repr__(self):
-        return f"<Job(id={self.id}, name={self.title})>"
+        return f"<Job(id={self.id}, title={self.title})>"
 
     @validates("salary")
     def validate_salary(self, key, salary):
