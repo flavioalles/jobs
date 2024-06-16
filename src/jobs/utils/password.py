@@ -30,3 +30,10 @@ PASSWORD_SCHEMA = (
         r'[!@#\$%\^&\*\(\)_\+\[\]{};\'\\:"|<,>\./\?`~-]'
     )  # NOTE: This checks for special characters
 )
+
+
+class InvalidPasswordError(Exception):
+    """Raised when an invalid password is provided."""
+
+    def __init__(self) -> None:
+        super().__init__("Invalid password.")

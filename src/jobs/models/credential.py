@@ -2,14 +2,7 @@ from passlib.hash import pbkdf2_sha256
 from sqlalchemy import Column, Unicode
 
 from .base import Base
-from ..utils.password import PASSWORD_SCHEMA
-
-
-class InvalidPasswordError(Exception):
-    """Raised when an invalid password is provided."""
-
-    def __init__(self) -> None:
-        super().__init__("Invalid password.")
+from ..utils.password import PASSWORD_SCHEMA, InvalidPasswordError
 
 
 class Credential(Base):

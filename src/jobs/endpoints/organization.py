@@ -3,10 +3,11 @@ import uuid
 from datetime import datetime
 
 from fastapi import APIRouter, HTTPException, status
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 from ..services.organization import OrganizationService
 from ..services.exceptions import ClientError, ConflictError, ServerError
+from ..utils.password import PASSWORD_SCHEMA, InvalidPasswordError
 
 
 logger = logging.getLogger(__name__)
@@ -28,6 +29,25 @@ class OrganizationInput(BaseModel):
 
     name: str
     password: str
+
+    @validator("password")
+    def validate_password(cls, password: str) -> str:
+        """
+        Validate the password.
+
+        Args:
+            password (str): The password to validate.
+
+        Returns:
+            str: The validated password.
+
+        Raises:
+            ValueError: If the password is empty.
+        """
+        if not PASSWORD_SCHEMA.validate(password):
+            raise InvalidPasswordError()
+
+        return password
 
 
 class OrganizationOutput(BaseModel):
