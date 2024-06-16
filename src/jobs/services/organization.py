@@ -46,7 +46,7 @@ class OrganizationService(BaseService):
         except IntegrityError as exc:
             self.session.rollback()
             raise ConflictError(message=str(exc))
-        except (InvalidRequestError, OperationalError):
+        except (InvalidRequestError, OperationalError) as exc:
             self.session.rollback()
             raise ServerError(message=str(exc))
 
