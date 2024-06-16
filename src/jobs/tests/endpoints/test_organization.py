@@ -4,7 +4,10 @@ import pytest
 from ...models.organization import Organization
 
 
-class TestOrganizationEndpoints:
+class TestCreateOrganizationEndpoint:
+    """
+    Test class for the create organization endpoint.
+    """
 
     resource: str = "/api/v1/organizations"
 
