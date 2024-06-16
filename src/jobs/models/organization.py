@@ -18,7 +18,7 @@ class Organization(Abstract, Credential):
 
     __tablename__ = "organizations"
 
-    name = Column(Unicode(255), nullable=False, unique=True)
+    name = Column(Unicode(255), nullable=False, unique=True, index=True)
     jobs = relationship(Job, back_populates="organization")
 
     def __repr__(self):
