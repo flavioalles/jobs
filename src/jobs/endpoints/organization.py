@@ -5,8 +5,10 @@ from uuid import UUID
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, validator
 
+from .job import JobInput, JobOutput
+from ..services.job import JobService
 from ..services.organization import OrganizationService
-from ..services.exceptions import ClientError, ConflictError, ServerError
+from ..services.exceptions import ClientError, ConflictError, NotFoundError, ServerError
 from ..utils.password import PASSWORD_SCHEMA, InvalidPasswordError
 
 
@@ -107,4 +109,62 @@ async def create_organization(
         name=organization.name,
         created=organization.created,
         updated=organization.updated,
+    )
+
+
+@router.post("/{organization_id}/jobs", status_code=status.HTTP_201_CREATED)
+async def create_job(
+    organization_id: UUID,
+    job_input: JobInput,
+) -> JobOutput:
+    """
+    Create a new job.
+
+    Args:
+        organization_id (UUID): The ID of the organization.
+        job_input (JobInput): The input data for creating the job.
+
+    Returns:
+        JobOutput: The created job.
+
+    Raises:
+        HTTPException: If there is a conflict, bad request, or internal server error.
+    """
+    try:
+        logger.info(
+            f"Creating job with title: {job_input.title} (organization: {organization_id})."
+        )
+        job = JobService().create(
+            organization_id=organization_id,
+            title=job_input.title,
+            salary=job_input.salary,
+            mode=job_input.mode,
+            contract=job_input.contract,
+            description=job_input.description,
+        )
+    except NotFoundError as exc:
+        logger.error(f"Failed to create job: {exc.message}")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=exc.message)
+    except ClientError as exc:
+        logger.error(f"Failed to create job: {exc.message}")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=exc.message)
+    except ServerError as exc:
+        logger.error(f"Failed to create job: {exc.message}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=exc.message
+        )
+
+    logger.info(f"Job created: {job.title} (organization: {organization_id}).")
+
+    return JobOutput(
+        id=job.id,
+        title=job.title,
+        salary=job.salary,
+        mode=job.mode.value,
+        contract=job.contract.value,
+        description=job.description,
+        organization_id=job.organization_id,
+        state=job.state.value,
+        created=job.created,
+        updated=job.updated,
     )
