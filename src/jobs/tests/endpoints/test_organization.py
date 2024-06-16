@@ -9,7 +9,7 @@ class TestOrganizationEndpoints:
     resource: str = "/api/v1/organizations"
 
     def test_when_create_organization_is_successful(
-        self, test_app, organization_service
+        self, test_app, organization_service, valid_password
     ):
         """
         Test case for creating an organization successfully.
@@ -25,7 +25,7 @@ class TestOrganizationEndpoints:
 
         response = test_app.post(
             self.resource,
-            data=json.dumps({"name": "an-organization"}),
+            data=json.dumps({"name": "an-organization", "password": valid_password}),
         )
 
         assert organization_service.session.query(Organization).count() == 1

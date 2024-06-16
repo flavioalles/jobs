@@ -45,3 +45,8 @@ def organization_service():
     service = OrganizationService()
     yield service
     service.session.rollback()
+
+
+@pytest.fixture(scope="session")
+def valid_password():
+    return "jqM.[+D;]TK*&q*jHG<JC]yAu1Evtv6K"

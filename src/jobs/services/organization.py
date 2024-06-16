@@ -8,6 +8,7 @@ from sqlalchemy.exc import (
 )
 from .base import BaseService
 from .exceptions import ClientError, ConflictError, ServerError
+from ..models.credential import InvalidPasswordError
 from ..models.database import Session
 from ..models.organization import Organization
 
@@ -18,27 +19,28 @@ class OrganizationService(BaseService):
     A class that provides methods for creating, updating, getting, and deleting organizations.
     """
 
-    def create(self, name: str) -> Organization:
+    def create(self, name: str, password: str) -> Organization:
         """
         Creates a new organization.
 
         Parameters:
-            self: The instance of the OrganizationService class.
             name (str): The name of the organization.
+            password (str): The password for the organization.
 
         Returns:
             Organization: The newly created organization.
 
         Raises:
-            ClientError: If there is a data or integrity error.
+            ClientError: If there is a data error or an invalid password is provided.
+            ConflictError: If there is a conflict error.
             ServerError: If there is an invalid request or operational error.
         """
-        organization = Organization(name=name)
         try:
+            organization = Organization(name=name, password=password)
             self.session.add(organization)
             self.session.flush()
             self.session.commit()
-        except DataError as exc:
+        except (DataError, InvalidPasswordError) as exc:
             self.session.rollback()
             raise ClientError(message=str(exc))
         except IntegrityError as exc:

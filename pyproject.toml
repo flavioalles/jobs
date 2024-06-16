@@ -13,6 +13,8 @@ sqlalchemy = {version = "~2.0", extras = ["pymysql"]}
 alembic = "~1.13"
 fastapi = "~0.111"
 pydantic-settings = "~2.3"
+password-validator = "~1.0"
+passlib = "~1.7"
 
 [tool.poetry.group.dev.dependencies]
 ipython = "~8.25"

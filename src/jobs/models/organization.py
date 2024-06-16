@@ -1,8 +1,10 @@
 from sqlalchemy import Column, Unicode
+
 from .base import Abstract
+from .credential import Credential
 
 
-class Organization(Abstract):
+class Organization(Abstract, Credential):
     """
     Model representing an organization.
 

@@ -23,28 +23,34 @@ class OrganizationInput(BaseModel):
 
     Attributes:
         name (str): The name of the organization.
+        password (str): The password for the organization.
     """
 
     name: str
+    password: str
 
 
-class OrganizationOutput(OrganizationInput):
+class OrganizationOutput(BaseModel):
     """
     Represents the output data for an organization.
 
     Attributes:
         id (uuid.UUID): The unique identifier of the organization.
+        name (str): The name of the organization.
         created (datetime): The datetime when the organization was created.
         updated (datetime): The datetime when the organization was last updated.
     """
 
     id: uuid.UUID
+    name: str
     created: datetime
     updated: datetime
 
 
 @router.post("", status_code=status.HTTP_201_CREATED)
-async def create_organization(organization: OrganizationInput) -> OrganizationOutput:
+async def create_organization(
+    organization_input: OrganizationInput,
+) -> OrganizationOutput:
     """
     Create a new organization.
 
@@ -58,8 +64,10 @@ async def create_organization(organization: OrganizationInput) -> OrganizationOu
         HTTPException: If there is a conflict, bad request, or internal server error.
     """
     try:
-        logger.info(f"Creating organization with name: {organization.name}")
-        organization = OrganizationService().create(organization.name)
+        logger.info(f"Creating organization with name: {organization_input.name}")
+        organization = OrganizationService().create(
+            name=organization_input.name, password=organization_input.password
+        )
     except ConflictError as exc:
         logger.error(f"Failed to create organization: {exc.message}")
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=exc.message)
@@ -75,8 +83,8 @@ async def create_organization(organization: OrganizationInput) -> OrganizationOu
     logger.info(f"Organization created: {organization.name}")
 
     return OrganizationOutput(
-        name=organization.name,
         id=organization.id,
+        name=organization.name,
         created=organization.created,
         updated=organization.updated,
     )
