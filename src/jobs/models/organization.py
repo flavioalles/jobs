@@ -22,4 +22,4 @@ class Organization(Abstract, Credential):
     jobs = relationship(Job, back_populates="organization")
 
     def __repr__(self):
-        return f"<Organization(name={self.name})>"
+        return f"<Organization(id={self.id}, name={self.name})>"
