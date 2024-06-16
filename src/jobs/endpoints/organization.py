@@ -1,6 +1,6 @@
 import logging
-import uuid
 from datetime import datetime
+from uuid import UUID
 
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, validator
@@ -55,13 +55,13 @@ class OrganizationOutput(BaseModel):
     Represents the output data for an organization.
 
     Attributes:
-        id (uuid.UUID): The unique identifier of the organization.
+        id (UUID): The unique identifier of the organization.
         name (str): The name of the organization.
         created (datetime): The datetime when the organization was created.
         updated (datetime): The datetime when the organization was last updated.
     """
 
-    id: uuid.UUID
+    id: UUID
     name: str
     created: datetime
     updated: datetime
