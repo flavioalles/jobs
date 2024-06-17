@@ -125,7 +125,9 @@ class TestCreateApplicationEndpoint:
             data={"username": username, "password": password},
         ).json()["access_token"]
 
-    def test_when_create_job_is_successful(self, test_app, application_service, valid_password):
+    def test_when_create_job_is_successful(
+        self, test_app, application_service, valid_password
+    ):
         """
         Test case for creating an application successfully.
 
@@ -174,5 +176,9 @@ class TestCreateApplicationEndpoint:
         assert response.json()["state"] == ApplicationState.DRAFT.value
         assert response.json()["job_id"] == str(a_job.id)
         assert response.json()["user_id"] == str(a_user.id)
-        assert response.json()["created"] == a_job.created.strftime("%Y-%m-%dT%H:%M:%S")
-        assert response.json()["updated"] == a_job.updated.strftime("%Y-%m-%dT%H:%M:%S")
+        assert response.json()["created"] == an_application.created.strftime(
+            "%Y-%m-%dT%H:%M:%S"
+        )
+        assert response.json()["updated"] == an_application.updated.strftime(
+            "%Y-%m-%dT%H:%M:%S"
+        )
