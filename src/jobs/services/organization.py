@@ -5,10 +5,11 @@ from sqlalchemy.exc import (
     IntegrityError,
     InvalidRequestError,
     OperationalError,
+    NoResultFound,
 )
 from .auth import AuthService
 from .base import BaseService
-from .exceptions import ClientError, ConflictError, ServerError
+from .exceptions import ClientError, ConflictError, ServerError, NotFoundError
 from ..models.credential import InvalidPasswordError
 from ..models.database import Session
 from ..models.organization import Organization
@@ -90,28 +91,26 @@ class OrganizationService(BaseService, AuthService):
         pass
 
     def authenticate(self, name: str, password: str) -> Organization:
-            """
-            Authenticates an organization.
+        """
+        Authenticates an organization.
 
-            Parameters:
-                name (str): The name of the organization to authenticate.
-                password (str): The password for the organization.
+        Parameters:
+            name (str): The name of the organization to authenticate.
+            password (str): The password for the organization.
 
-            Returns:
-                Organization: The authenticated organization.
+        Returns:
+            Organization: The authenticated organization.
 
-            Raises:
-                NotFoundError: If the organization with the given name is not found.
-                InvalidPasswordError: If the password is invalid.
-            """
-            try:
-                organization = (
-                    self.session.query(Organization).filter_by(name=name).one()
-                )
-            except NoResultFound:
-                raise NotFoundError(message=f"Organization {name} not found.")
+        Raises:
+            NotFoundError: If the organization with the given name is not found.
+            InvalidPasswordError: If the password is invalid.
+        """
+        try:
+            organization = self.session.query(Organization).filter_by(name=name).one()
+        except NoResultFound:
+            raise NotFoundError(message=f"Organization {name} not found.")
 
-            if not organization.check_password(password):
-                raise InvalidPasswordError(message="Invalid password.")
+        if not organization.check_password(password):
+            raise InvalidPasswordError(message="Invalid password.")
 
-            return organization
+        return organization
