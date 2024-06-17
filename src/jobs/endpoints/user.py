@@ -28,7 +28,7 @@ router = APIRouter(
     tags=["users"],
 )
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/users/token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/users/auth")
 
 
 class UserInput(PasswordInput):
