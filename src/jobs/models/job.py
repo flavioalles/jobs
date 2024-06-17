@@ -16,7 +16,7 @@ class Job(Abstract):
         salary (float): The salary of the job.
         mode (JobMode): The mode of the job.
         contract (JobContract): The contract type of the job.
-        organization_id (int): The ID of the organization associated with the job.
+        organization_id (UUID): The ID of the organization associated with the job.
         organization (Organization): The organization associated with the job.
     """
 
