@@ -231,3 +231,103 @@ async def create_job(
         created=job.created,
         updated=job.updated,
     )
+
+
+@router.get("", status_code=status.HTTP_501_NOT_IMPLEMENTED)
+async def get_organizations() -> None:
+    """
+    Retrieve organizations.
+
+    Args:
+        None
+
+    Returns:
+        None
+
+    Raises:
+        HTTPException: Operation not implemented yet.
+    """
+    logger.warning("Yet to be implemented.")
+    raise HTTPException(
+        status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Yet to be implemented."
+    )
+
+
+@router.get("/{organization_id}", status_code=status.HTTP_501_NOT_IMPLEMENTED)
+async def get_organization(organization_id: UUID) -> None:
+    """
+    Retrieve an organization.
+
+    Args:
+        organization_id (UUID): The ID of the organization.
+
+    Returns:
+        None
+
+    Raises:
+        HTTPException: Operation not implemented yet.
+    """
+    logger.warning("Yet to be implemented.")
+    raise HTTPException(
+        status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Yet to be implemented."
+    )
+
+
+@router.patch("/{organization_id}", status_code=status.HTTP_501_NOT_IMPLEMENTED)
+async def patch_organization(organization_id: UUID) -> None:
+    """
+    Updates an organization.
+
+    Args:
+        organization_id (UUID): The ID of the organization.
+
+    Returns:
+        None
+
+    Raises:
+        HTTPException: Operation not implemented yet.
+    """
+    logger.warning("Yet to be implemented.")
+    raise HTTPException(
+        status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Yet to be implemented."
+    )
+
+
+@router.delete("/{organization_id}", status_code=status.HTTP_501_NOT_IMPLEMENTED)
+async def delete_organization(organization_id: UUID) -> None:
+    """
+    Deletes an organization.
+
+    Args:
+        organization_id (UUID): The ID of the organization.
+
+    Returns:
+        None
+
+    Raises:
+        HTTPException: Operation not implemented yet.
+    """
+    logger.warning("Yet to be implemented.")
+    raise HTTPException(
+        status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Yet to be implemented."
+    )
+
+
+@router.get("/{organization_id}/jobs", status_code=status.HTTP_501_NOT_IMPLEMENTED)
+async def get_jobs_by_organization(organization_id: UUID) -> None:
+    """
+    Retrieves job for an organization.
+
+    Args:
+        organization_id (UUID): The ID of the organization.
+
+    Returns:
+        None
+
+    Raises:
+        HTTPException: Operation not implemented yet.
+    """
+    logger.warning("Yet to be implemented.")
+    raise HTTPException(
+        status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Yet to be implemented."
+    )

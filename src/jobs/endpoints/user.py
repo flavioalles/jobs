@@ -236,3 +236,103 @@ async def create_application(
         created=application.created,
         updated=application.updated,
     )
+
+
+@router.get("", status_code=status.HTTP_501_NOT_IMPLEMENTED)
+async def get_users() -> None:
+    """
+    Retrieve users.
+
+    Args:
+        None
+
+    Returns:
+        None
+
+    Raises:
+        HTTPException: Operation not implemented yet.
+    """
+    logger.warning("Yet to be implemented.")
+    raise HTTPException(
+        status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Yet to be implemented."
+    )
+
+
+@router.get("/{user_id}", status_code=status.HTTP_501_NOT_IMPLEMENTED)
+async def get_user(user_id: UUID) -> None:
+    """
+    Retrieve a user.
+
+    Args:
+        user_id (UUID): The ID of the user.
+
+    Returns:
+        None
+
+    Raises:
+        HTTPException: Operation not implemented yet.
+    """
+    logger.warning("Yet to be implemented.")
+    raise HTTPException(
+        status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Yet to be implemented."
+    )
+
+
+@router.patch("/{user_id}", status_code=status.HTTP_501_NOT_IMPLEMENTED)
+async def patch_user(user_id: UUID) -> None:
+    """
+    Update a user.
+
+    Args:
+        user_id (UUID): The ID of the user.
+
+    Returns:
+        None
+
+    Raises:
+        HTTPException: Operation not implemented yet.
+    """
+    logger.warning("Yet to be implemented.")
+    raise HTTPException(
+        status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Yet to be implemented."
+    )
+
+
+@router.delete("/{user_id}", status_code=status.HTTP_501_NOT_IMPLEMENTED)
+async def delete_user(user_id: UUID) -> None:
+    """
+    Delete a user.
+
+    Args:
+        user_id (UUID): The ID of the user.
+
+    Returns:
+        None
+
+    Raises:
+        HTTPException: Operation not implemented yet.
+    """
+    logger.warning("Yet to be implemented.")
+    raise HTTPException(
+        status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Yet to be implemented."
+    )
+
+
+@router.get("/{user_id}/applications", status_code=status.HTTP_501_NOT_IMPLEMENTED)
+async def get_applications_by_user(user_id: UUID) -> None:
+    """
+    Retrieve applications for a user.
+
+    Args:
+        user_id (UUID): The ID of the user.
+
+    Returns:
+        None
+
+    Raises:
+        HTTPException: Operation not implemented yet.
+    """
+    logger.warning("Yet to be implemented.")
+    raise HTTPException(
+        status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Yet to be implemented."
+    )

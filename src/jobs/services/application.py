@@ -75,10 +75,13 @@ class ApplicationService(BaseService):
         Parameters:
             self: The instance of the ApplicationService class.
 
+        Raises:
+            NotImplementedError: method is yet to be implemented.
+
         Returns:
             None
         """
-        pass
+        raise NotImplementedError("ApplicationService.update not implemented.")
 
     def get(self):
         """
@@ -87,10 +90,13 @@ class ApplicationService(BaseService):
         Parameters:
             self: The instance of the ApplicationService class.
 
+        Raises:
+            NotImplementedError: method is yet to be implemented.
+
         Returns:
             None
         """
-        pass
+        raise NotImplementedError("ApplicationService.get not implemented.")
 
     def delete(self):
         """
@@ -99,7 +105,10 @@ class ApplicationService(BaseService):
         Parameters:
             self: The instance of the ApplicationService class.
 
+        Raises:
+            NotImplementedError: method is yet to be implemented.
+
         Returns:
             None
         """
-        pass
+        raise NotImplementedError("ApplicationService.delete not implemented.")

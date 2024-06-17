@@ -61,10 +61,13 @@ class OrganizationService(BaseService, AuthService):
         Parameters:
             self: The instance of the OrganizationService class.
 
+        Raises:
+            NotImplementedError: method is yet to be implemented.
+
         Returns:
             None
         """
-        pass
+        raise NotImplementedError("OrganizationService.update not implemented.")
 
     def get(self, id: str | None = None, name: str | None = None) -> Organization:
         """
@@ -104,10 +107,13 @@ class OrganizationService(BaseService, AuthService):
         Parameters:
             self: The instance of the OrganizationService class.
 
+        Raises:
+            NotImplementedError: method is yet to be implemented.
+
         Returns:
             None
         """
-        pass
+        raise NotImplementedError("OrganizationService.delete not implemented.")
 
     def authenticate(self, name: str, password: str) -> Organization:
         """

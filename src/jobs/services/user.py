@@ -61,10 +61,13 @@ class UserService(BaseService, AuthService):
         Parameters:
             self: The instance of the UserService class.
 
+        Raises:
+            NotImplementedError: method is yet to implemented.
+
         Returns:
             None
         """
-        pass
+        raise NotImplementedError("UserService.update is not implemented.")
 
     def get(self, id: str | None = None, username: str | None = None) -> User:
         """
@@ -105,10 +108,13 @@ class UserService(BaseService, AuthService):
         Parameters:
             self: The instance of the UserService class.
 
+        Raises:
+            NotImplementedError: Method is yet to be implemented.
+
         Returns:
             None
         """
-        pass
+        raise NotImplementedError("UserService.delete is not implemented.")
 
     def authenticate(self, username: str, password: str) -> User:
         """

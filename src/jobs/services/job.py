@@ -84,10 +84,13 @@ class JobService(BaseService):
         Parameters:
             self: The instance of the JobService class.
 
+        Raises:
+            NotImplementedError: Method is yet to be implemented.
+
         Returns:
             None
         """
-        pass
+        raise NotImplementedError("JobService.update not implemented.")
 
     def get(self):
         """
@@ -96,10 +99,13 @@ class JobService(BaseService):
         Parameters:
             self: The instance of the JobService class.
 
+        Raises:
+            NotImplementedError: Method is yet to be implemented.
+
         Returns:
             None
         """
-        pass
+        raise NotImplementedError("JobService.get not implemented.")
 
     def delete(self):
         """
@@ -108,7 +114,10 @@ class JobService(BaseService):
         Parameters:
             self: The instance of the JobService class.
 
+        Raises:
+            NotImplementedError: Method is yet to be implemented.
+
         Returns:
             None
         """
-        pass
+        raise NotImplementedError("JobService.delete not implemented.")
