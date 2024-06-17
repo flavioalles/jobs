@@ -7,7 +7,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel, validator
 
-from .base import AbstractModel, PasswordInput
+from .base import AbstractModel, PasswordInput, Token
 from .job import JobInput, Job
 from ..services.job import JobService
 from ..services.organization import OrganizationService
@@ -51,19 +51,6 @@ class Organization(AbstractModel):
     """
 
     name: str
-
-
-class Token(BaseModel):
-    """
-    Represents the output data for an authentication operation.
-
-    Attributes:
-        access_token (str): The access token.
-        token_type (str): The token type.
-    """
-
-    access_token: str
-    token_type: str = "bearer"
 
 
 @router.post("", status_code=status.HTTP_201_CREATED)

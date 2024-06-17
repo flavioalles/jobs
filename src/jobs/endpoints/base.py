@@ -49,3 +49,16 @@ class PasswordInput(BaseModel):
             raise InvalidPasswordError()
 
         return password
+
+
+class Token(BaseModel):
+    """
+    Represents the output data for an authentication operation.
+
+    Attributes:
+        access_token (str): The access token.
+        token_type (str): The token type.
+    """
+
+    access_token: str
+    token_type: str = "bearer"
