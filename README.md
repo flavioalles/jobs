@@ -28,6 +28,17 @@ The relate to each as such:
 
 Check them (and test them) at where you're serving the app and `/docs` (**Swagger UI**) or `/redoc` (**Redocly**).
 
+The endpoints that have been implemented are:
+
+- `POST /api/v1/organizations/`
+- `POST /api/v1/organizations/auth`
+- `POST /api/v1/organizations/<id>/jobs`
+- `POST /api/v1/users/`
+- `POST /api/v1/users/auth`
+- `POST /api/v1/users/<id>/applications`
+
+All others return a `501`, for now.
+
 #### Authentication
 
 `Organization` (or `/organizations`) and `User` (or `/users`) are the authenticated entities of the system.
