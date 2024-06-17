@@ -7,10 +7,17 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import validator
 
+from .application import Application, ApplicationInput
 from .base import AbstractModel, PasswordInput, Token
-from ..services.user import UserService
+from ..services.application import ApplicationService
 from ..services.exceptions import ClientError, ConflictError, NotFoundError, ServerError
-from ..utils.auth import create_jwt_token
+from ..services.user import UserService
+from ..utils.auth import (
+    create_jwt_token,
+    get_jwt_subject,
+    FailedJWTDecodeError,
+    NoJWTSubjectError,
+)
 from ..utils.password import PASSWORD_SCHEMA, InvalidPasswordError
 
 
@@ -147,3 +154,85 @@ async def authenticate_user(
     logger.info(f"Authenticated user {form_data.username}.")
 
     return Token(access_token=create_jwt_token(user.username))
+
+
+async def get_authenticated_user(token: Annotated[str, Depends(oauth2_scheme)]) -> User:
+    """
+    Retrieves the authenticated user based on the provided token.
+
+    Args:
+        token (str): The authentication token.
+
+    Returns:
+        User: The authenticated User.
+
+    Raises:
+        HTTPException: If the token is invalid or the user cannot be retrieved.
+    """
+    try:
+        user = UserService().get(username=get_jwt_subject(token))
+    except (FailedJWTDecodeError, NoJWTSubjectError, NotFoundError) as exc:
+        logger.error(f"Failed to decode JWT token/get user: {exc}")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    return User(
+        id=user.id,
+        name=user.name,
+        username=user.username,
+        created=user.created,
+        updated=user.updated,
+    )
+
+
+@router.post("/{user_id}/applications", status_code=status.HTTP_201_CREATED)
+async def create_application(
+    user_id: UUID,
+    application_input: ApplicationInput,
+    authenticated_user: Annotated[User, Depends(get_authenticated_user)],
+) -> Application:
+
+    if user_id != authenticated_user.id:
+        logger.error(
+            f"Failed to create application: User mismatch (path: {user_id}, authenticated: {authenticate_id.id})."
+        )
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Failed to create application: User mismatch.",
+        )
+
+    try:
+        logger.info(
+            f"Creating application for job: {application_input.job_id} (user: {user_id})."
+        )
+        application = ApplicationService().create(
+            job_id=application_input.job_id,
+            user_id=user_id,
+        )
+    except NotFoundError as exc:
+        logger.error(f"Failed to create application: {exc.message}")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=exc.message)
+    except ClientError as exc:
+        logger.error(f"Failed to create application: {exc.message}")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=exc.message)
+    except ServerError as exc:
+        logger.error(f"Failed to create application: {exc.message}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=exc.message
+        )
+
+    logger.info(
+        f"Application created for job: {application_input.job_id} (user: {user_id})."
+    )
+
+    return Application(
+        id=application.id,
+        state=application.state,
+        job_id=application.job_id,
+        user_id=application.user_id,
+        created=application.created,
+        updated=application.updated,
+    )
