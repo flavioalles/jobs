@@ -7,7 +7,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel, validator
 
-from .job import JobInput, JobOutput
+from .job import JobInput, Job
 from ..services.job import JobService
 from ..services.organization import OrganizationService
 from ..services.exceptions import ClientError, ConflictError, NotFoundError, ServerError
@@ -209,7 +209,7 @@ async def create_job(
     authenticated_organization: Annotated[
         Organization, Depends(get_authenticated_organization)
     ],
-) -> JobOutput:
+) -> Job:
     """
     Create a new job.
 
@@ -218,7 +218,7 @@ async def create_job(
         job_input (JobInput): The input data for creating the job.
 
     Returns:
-        JobOutput: The created job.
+        Job: The created job.
 
     Raises:
         HTTPException: If there is a conflict, bad request, or internal server error.
@@ -258,7 +258,7 @@ async def create_job(
 
     logger.info(f"Job created: {job.title} (organization: {organization_id}).")
 
-    return JobOutput(
+    return Job(
         id=job.id,
         title=job.title,
         salary=job.salary,

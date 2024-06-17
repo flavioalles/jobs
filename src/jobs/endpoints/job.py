@@ -25,7 +25,7 @@ class JobInput(BaseModel):
     description: str | None = None
 
 
-class JobOutput(JobInput):
+class Job(JobInput):
     """
     Represents the output data for a job.
 
