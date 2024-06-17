@@ -21,14 +21,14 @@ from ..utils.auth import (
 from ..utils.password import PASSWORD_SCHEMA, InvalidPasswordError
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/organizations/token")
-
 logger = logging.getLogger(__name__)
 
 router = APIRouter(
     prefix="/api/v1/organizations",
     tags=["organizations"],
 )
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/organizations/auth")
 
 
 class OrganizationInput(PasswordInput):
