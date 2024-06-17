@@ -6,6 +6,7 @@ from ..models.base import Base
 from ..models.database import Session
 from ..services.job import JobService
 from ..services.organization import OrganizationService
+from ..services.user import UserService
 from ..settings.base import Settings
 
 
@@ -56,5 +57,12 @@ def valid_password():
 @pytest.fixture(scope="function")
 def job_service():
     service = JobService()
+    yield service
+    service.session.rollback()
+
+
+@pytest.fixture(scope="function")
+def user_service():
+    service = UserService()
     yield service
     service.session.rollback()
