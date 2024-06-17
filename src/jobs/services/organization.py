@@ -10,9 +10,9 @@ from sqlalchemy.exc import (
 from .auth import AuthService
 from .base import BaseService
 from .exceptions import ClientError, ConflictError, ServerError, NotFoundError
-from ..models.credential import InvalidPasswordError
 from ..models.database import Session
 from ..models.organization import Organization
+from ..utils.password import InvalidPasswordError
 
 
 @dataclass
