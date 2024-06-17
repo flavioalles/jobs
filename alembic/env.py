@@ -6,6 +6,7 @@ from sqlalchemy import pool
 from alembic import context
 
 from src.jobs.models.base import Base
+from src.jobs.models.application import Application  # noqa: F401
 from src.jobs.models.job import Job  # noqa: F401
 from src.jobs.models.organization import Organization  # noqa: F401
 from src.jobs.models.user import User  # noqa: F401

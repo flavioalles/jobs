@@ -1,6 +1,6 @@
 from email_validator import validate_email, EmailNotValidError
 from sqlalchemy import Column, Unicode
-from sqlalchemy.orm import validates
+from sqlalchemy.orm import relationship, validates
 
 from .base import Abstract
 from .credential import Credential
@@ -21,6 +21,7 @@ class User(Abstract, Credential):
 
     name = Column(Unicode(255), nullable=False)
     username = Column(Unicode(255), nullable=False, unique=True, index=True)
+    applications = relationship("Application", back_populates="user")
 
     def __repr__(self):
         return f"<User(id={self.id}, username={self.username})>"

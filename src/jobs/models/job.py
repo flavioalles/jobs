@@ -32,6 +32,7 @@ class Job(Abstract):
         UUID(as_uuid=True), ForeignKey("organizations.id"), nullable=False
     )
     organization = relationship("Organization", back_populates="jobs")
+    applications = relationship("Application", back_populates="job")
 
     def __repr__(self):
         return f"<Job(id={self.id}, title={self.title})>"
