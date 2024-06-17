@@ -7,6 +7,7 @@ from alembic import context
 
 from src.jobs.models.base import Base
 from src.jobs.models.organization import Organization
+from src.jobs.models.user import User  # noqa: F401
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

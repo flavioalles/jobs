@@ -16,6 +16,7 @@ pydantic-settings = "~2.3"
 password-validator = "~1.0"
 passlib = "~1.7"
 pyjwt = "~2.8"
+email-validator = "~2.1"
 
 [tool.poetry.group.dev.dependencies]
 ipython = "~8.25"
