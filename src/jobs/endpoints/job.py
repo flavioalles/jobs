@@ -3,6 +3,7 @@ from uuid import UUID
 
 from pydantic import BaseModel
 
+from .base import AbstractModel
 from ..utils.job import JobMode, JobContract, JobState
 
 
@@ -25,20 +26,14 @@ class JobInput(BaseModel):
     description: str | None = None
 
 
-class Job(JobInput):
+class Job(AbstractModel, JobInput):
     """
     Represents the output data for a job.
 
     Attributes:
-        id (UUID): The unique identifier of the job.
         state (JobState): The state of the job.
         organization_id (UUID): The unique identifier of the organization associated with the job.
-        created (datetime): The datetime when the job was created.
-        updated (datetime): The datetime when the job was last updated.
     """
 
-    id: UUID
     state: JobState
     organization_id: UUID
-    created: datetime
-    updated: datetime

@@ -7,6 +7,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel, validator
 
+from .base import AbstractModel, PasswordInput
 from .job import JobInput, Job
 from ..services.job import JobService
 from ..services.organization import OrganizationService
@@ -30,53 +31,26 @@ router = APIRouter(
 )
 
 
-class OrganizationInput(BaseModel):
+class OrganizationInput(PasswordInput):
     """
     Represents the input data for an organization.
 
     Attributes:
         name (str): The name of the organization.
-        password (str): The password for the organization.
     """
 
     name: str
-    password: str
-
-    @validator("password")
-    def validate_password(cls, password: str) -> str:
-        """
-        Validate the password.
-
-        Args:
-            password (str): The password to validate.
-
-        Returns:
-            str: The validated password.
-
-        Raises:
-            ValueError: If the password is empty.
-        """
-        if not PASSWORD_SCHEMA.validate(password):
-            raise InvalidPasswordError()
-
-        return password
 
 
-class Organization(BaseModel):
+class Organization(AbstractModel):
     """
     Represents the output data for an organization.
 
     Attributes:
-        id (UUID): The unique identifier of the organization.
         name (str): The name of the organization.
-        created (datetime): The datetime when the organization was created.
-        updated (datetime): The datetime when the organization was last updated.
     """
 
-    id: UUID
     name: str
-    created: datetime
-    updated: datetime
 
 
 class Token(BaseModel):
