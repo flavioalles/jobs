@@ -1,13 +1,16 @@
 import logging
 from datetime import datetime
+from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter, HTTPException, status
-from pydantic import BaseModel, validator
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from pydantic import validator
 
-from .base import AbstractModel, PasswordInput
+from .base import AbstractModel, PasswordInput, Token
 from ..services.user import UserService
 from ..services.exceptions import ClientError, ConflictError, NotFoundError, ServerError
+from ..utils.auth import create_jwt_token
 from ..utils.password import PASSWORD_SCHEMA, InvalidPasswordError
 
 
@@ -17,6 +20,8 @@ router = APIRouter(
     prefix="/api/v1/users",
     tags=["users"],
 )
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/users/token")
 
 
 class UserInput(PasswordInput):
@@ -108,3 +113,37 @@ async def create_user(
         created=user.created,
         updated=user.updated,
     )
+
+
+@router.post("/auth", status_code=status.HTTP_200_OK)
+async def authenticate_user(
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
+) -> Token:
+    """
+    Authenticate a user.
+
+    Args:
+        form_data (Annotated[OAuth2PasswordRequestForm, Depends()]): The form data containing the username and password.
+
+    Returns:
+        Token: The token for the authenticated user.
+
+    Raises:
+        HTTPException: If there is a failure to authenticate.
+    """
+    try:
+        logger.info(f"Authenticating user {form_data.username}.")
+        user = UserService().authenticate(
+            username=form_data.username, password=form_data.password
+        )
+    except (NotFoundError, InvalidPasswordError) as exc:
+        logger.error(f"Failed to authenticate user: {exc.message}")
+        # NOTE: not a good practice to return detailed error messages in this use case.
+        # Hence, avoiding returning the actual error message.
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Failure to authenticate."
+        )
+
+    logger.info(f"Authenticated user {form_data.username}.")
+
+    return Token(access_token=create_jwt_token(user.username))
