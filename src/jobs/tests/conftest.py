@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 
 from ..models.base import Base
 from ..models.database import Session
+from ..services.application import ApplicationService
 from ..services.job import JobService
 from ..services.organization import OrganizationService
 from ..services.user import UserService
@@ -64,5 +65,12 @@ def job_service():
 @pytest.fixture(scope="function")
 def user_service():
     service = UserService()
+    yield service
+    service.session.rollback()
+
+
+@pytest.fixture(scope="function")
+def application_service():
+    service = ApplicationService()
     yield service
     service.session.rollback()
