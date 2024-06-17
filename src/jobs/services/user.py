@@ -66,17 +66,37 @@ class UserService(BaseService, AuthService):
         """
         pass
 
-    def get(self):
+    def get(self, id: str | None = None, username: str | None = None) -> User:
         """
-        Retrieves information about an user.
+        Retrieve a user by their ID or username.
 
-        Parameters:
-            self: The instance of the UserService class.
+        Args:
+            id (str, optional): The ID of the user. Defaults to None.
+            username (str, optional): The username of the user. Defaults to None.
 
         Returns:
-            None
+            User: The user object.
+
+        Raises:
+            ClientError: If neither id nor username is provided, or if both id and username are provided.
+            NotFoundError: If the user is not found.
         """
-        pass
+
+        if id is None and username is None:
+            raise ClientError(message="Either id or name must be provided.")
+        elif id is not None and username is not None:
+            raise ClientError(
+                message="Both id and name cannot be provided simultaneously."
+            )
+
+        try:
+            return (
+                self.session.query(User).filter_by(id=id).one()
+                if id is not None
+                else self.session.query(User).filter_by(username=username).one()
+            )
+        except NoResultFound:
+            raise NotFoundError(message=f"User {id or name} not found.")
 
     def delete(self):
         """
