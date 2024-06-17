@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "jobs"
+version = "0.1.0"
+description = "An API providing a service that manages job postings."
+authors = ["Flavio Alles <flavio.alles@proton.me>"]
+license = "MIT"
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "~3.12"
+sqlalchemy = {version = "~2.0", extras = ["pymysql"]}
+alembic = "~1.13"
+fastapi = "~0.111"
+pydantic-settings = "~2.3"
+password-validator = "~1.0"
+passlib = "~1.7"
+pyjwt = "~2.8"
+email-validator = "~2.1"
+
+[tool.poetry.group.dev.dependencies]
+ipython = "~8.25"
+black = "~24.4"
+mypy = "~1.10"
+pytest = "~8.2"
+ipdb = "~0.13"
+pytest-cov = "~5.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
