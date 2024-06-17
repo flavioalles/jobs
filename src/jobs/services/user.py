@@ -90,14 +90,27 @@ class UserService(BaseService, AuthService):
         """
         pass
 
-    def authenticate(self):
+    def authenticate(self, username: str, password: str) -> User:
         """
-        Authenticates the user.
+        Authenticates a user.
 
         Parameters:
-            self: The instance of the UserService class.
+            username (str): The username of the user to authenticate.
+            password (str): The password for the user.
 
         Returns:
-            None
+            User: The authenticated user.
+
+        Raises:
+            NotFoundError: If the user with the given name is not found.
+            InvalidPasswordError: If the password is invalid.
         """
-        pass
+        try:
+            user = self.session.query(User).filter_by(username=username).one()
+        except NoResultFound:
+            raise NotFoundError(message=f"User {username} not found.")
+
+        if not user.check_password(password):
+            raise InvalidPasswordError(message="Invalid password.")
+
+        return user
