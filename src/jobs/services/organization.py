@@ -66,17 +66,36 @@ class OrganizationService(BaseService, AuthService):
         """
         pass
 
-    def get(self):
+    def get(self, id: str | None = None, name: str | None = None) -> Organization:
         """
         Retrieves information about an organization.
 
         Parameters:
-            self: The instance of the OrganizationService class.
+            id (str | None): The ID of the organization to retrieve information for.
+            name (str | None): The name of the organization to retrieve information for.
 
         Returns:
-            None
+            Organization: An instance of the Organization class representing the retrieved organization.
+
+        Raises:
+            ClientError: If neither id nor name is provided, or if both id and name are provided.
+            NotFoundError: If the organization with the specified id or name is not found.
         """
-        pass
+        if id is None and name is None:
+            raise ClientError(message="Either id or name must be provided.")
+        elif id is not None and name is not None:
+            raise ClientError(
+                message="Both id and name cannot be provided simultaneously."
+            )
+
+        try:
+            return (
+                self.session.query(Organization).filter_by(id=id).one()
+                if id is not None
+                else self.session.query(Organization).filter_by(name=name).one()
+            )
+        except NoResultFound:
+            raise NotFoundError(message=f"Organization {id or name} not found.")
 
     def delete(self):
         """
