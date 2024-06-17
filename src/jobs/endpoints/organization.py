@@ -52,7 +52,7 @@ class OrganizationInput(BaseModel):
         return password
 
 
-class OrganizationOutput(BaseModel):
+class Organization(BaseModel):
     """
     Represents the output data for an organization.
 
@@ -72,7 +72,7 @@ class OrganizationOutput(BaseModel):
 @router.post("", status_code=status.HTTP_201_CREATED)
 async def create_organization(
     organization_input: OrganizationInput,
-) -> OrganizationOutput:
+) -> Organization:
     """
     Create a new organization.
 
@@ -80,7 +80,7 @@ async def create_organization(
         organization (OrganizationInput): The input data for creating the organization.
 
     Returns:
-        OrganizationOutput: The created organization.
+        Organization: The created organization.
 
     Raises:
         HTTPException: If there is a conflict, bad request, or internal server error.
@@ -104,7 +104,7 @@ async def create_organization(
 
     logger.info(f"Organization created: {organization.name}")
 
-    return OrganizationOutput(
+    return Organization(
         id=organization.id,
         name=organization.name,
         created=organization.created,
