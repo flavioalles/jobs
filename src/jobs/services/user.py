@@ -9,7 +9,7 @@ from sqlalchemy.exc import (
 )
 from .auth import AuthService
 from .base import BaseService
-from .exceptions import ClientError, ConflictError, ServerError
+from .exceptions import ClientError, ConflictError, ServerError, NotFoundError
 from ..models.user import User
 from ..utils.password import InvalidPasswordError
 from ..utils.user import InvalidUsernameError
