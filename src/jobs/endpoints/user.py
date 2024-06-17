@@ -194,7 +194,21 @@ async def create_application(
     application_input: ApplicationInput,
     authenticated_user: Annotated[User, Depends(get_authenticated_user)],
 ) -> Application:
+    """
+    Create an application for a job.
 
+    Args:
+        user_id (UUID): The ID of the user creating the application.
+        application_input (ApplicationInput): The input data for creating the application.
+        authenticated_user (User): The authenticated user.
+
+    Returns:
+        Application: The created application.
+
+    Raises:
+        HTTPException: If there is an error creating the application.
+
+    """
     if user_id != authenticated_user.id:
         logger.error(
             f"Failed to create application: User mismatch (path: {user_id}, authenticated: {authenticate_id.id})."
