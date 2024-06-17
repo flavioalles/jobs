@@ -19,6 +19,9 @@ class Settings(BaseSettings):
     debug: bool = False
     description: str = "An API providing a service that manages job postings."
     database_url: str
+    jwt_algorithm: str = "HS256"
+    jwt_secret_key: str
+    jwt_token_expiration_minutes: int = 60
 
     class Config:
         env_file = os.getenv("ENV_FILE", None)

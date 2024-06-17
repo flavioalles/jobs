@@ -3,6 +3,7 @@ import pytest
 
 from ...models.job import Job
 from ...models.organization import Organization
+from ...utils.auth import create_jwt_token
 from ...utils.job import JobContract, JobMode, JobState
 
 
@@ -49,12 +50,70 @@ class TestCreateOrganizationEndpoint:
         )
 
 
+class TestAuthenticateOrganizationEndpoint:
+    """
+    Test class for the authenticate organization endpoint.
+    """
+
+    resource: str = "/api/v1/organizations/auth"
+
+    def test_when_authenticate_organization_is_successful(
+        self, test_app, organization_service, valid_password
+    ):
+        """
+        Test case for authenticating an organization successfully.
+
+        Args:
+            test_app: The test client for the application.
+            organization_service: The organization service.
+            valid_password: A valid password for the organization.
+
+        Returns:
+            None
+        """
+        organization_service.session.add(
+            Organization(name="an-organization", password=valid_password)
+        )
+        organization_service.session.flush()
+
+        response = test_app.post(
+            self.resource,
+            data={"username": "an-organization", "password": valid_password},
+        )
+
+        assert response.status_code == 200
+        assert response.json()["access_token"] == create_jwt_token("an-organization")
+        assert response.json()["token_type"] == "bearer"
+
+
 class TestCreateJobEndpoint:
     """
     Test class for the create job endpoint.
     """
 
+    auth: str = "/api/v1/organizations/auth"
     resource: str = "/api/v1/organizations/{organization_id}/jobs"
+
+    @classmethod
+    def _authenticate(cls, test_app, username, password):
+        """
+        Authenticate a user.
+
+        This method authenticates a user by sending a POST request to the authentication endpoint with the provided
+        username and password. It returns the access token obtained from the response.
+
+        Args:
+            test_app (TestClient): The test client used to make HTTP requests.
+            username (str): The username of the user.
+            password (str): The password of the user.
+
+        Returns:
+            str: The access token.
+        """
+        return test_app.post(
+            cls.auth,
+            data={"username": username, "password": password},
+        ).json()["access_token"]
 
     def test_when_create_job_is_successful(self, test_app, job_service, valid_password):
         """
@@ -86,6 +145,9 @@ class TestCreateJobEndpoint:
                     "contract": JobContract.FULL_TIME.value,
                 }
             ),
+            headers={
+                "Authorization": f"Bearer {self._authenticate(test_app, "an-organization", valid_password)}"
+            },
         )
 
         assert job_service.session.query(Job).count() == 1
